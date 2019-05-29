@@ -1,0 +1,43 @@
+<resources>
+    <declare-styleable name="SimpleBarGraph">
+        <attr name="sbg_colorLine" format="color"/>
+        <attr name="sbg_bubbleFillColor" format="color"/>
+        <attr name="sbg_bubbleStrokeColor" format="color"/>
+        <attr name="sbg_textColorLabel" format="color"/>
+        <attr name="sbg_barStrokeColor" format="color"/>
+        <attr name="sbg_barFillColor" format="color"/>
+        <attr name="sbg_strokeColorAxis" format="color"/>
+        <attr name="sbg_textColorBarValue" format="color"/>
+        <attr name="sbg_bubbleRadius" format="dimension"/>
+        <attr name="sbg_bubbleStrokeWidth" format="dimension"/>
+        <attr name="sbg_barWidth" format="dimension"/>
+        <attr name="sbg_barSpacing" format="dimension"/>
+        <attr name="sbg_barStrokeWidth" format="dimension"/>
+        <attr name="sbg_textSizeXLabel" format="dimension"/>
+        <attr name="sbg_textSizeYLabel" format="dimension"/>
+        <attr name="sbg_strokeWidthAxis" format="dimension"/>
+        <attr name="sbg_textSizeBarValue" format="dimension"/>
+        <attr name="sbg_lineStrokeWidth" format="dimension"/>
+        <attr name="sbg_maxBarWidth" format="dimension"/>
+    </declare-styleable>
+
+    //Default Values
+    <color name="sbg_default_colorLine">@color/colorPrimary</color>
+    <color name="sbg_default_bubbleFillColor">@android:color/white</color>
+    <color name="sbg_default_bubbleStrokeColor">@color/colorPrimary</color>
+    <color name="sbg_default_textColorLabel">@color/colorAccent</color>
+    <color name="sbg_default_barStrokeColor">#9a9a9a</color>
+    <color name="sbg_default_barFillColor">#e0e0e0</color>
+    <color name="sbg_default_strokeColorAxis">#868686</color>
+    <color name="sbg_default_textColorBarValue">#c3c3c3</color>
+    <dimen name="sbg_default_bubbleRadius">6dp</dimen>
+    <dimen name="sbg_default_bubbleStrokeWidth">2dp</dimen>
+    <dimen name="sbg_default_lineStrokeWidth">2dp</dimen>
+    <dimen name="sbg_default_barStrokeWidth">0.5dp</dimen>
+    <dimen name="sbg_default_textSizeXLabel">11sp</dimen>
+    <dimen name="sbg_default_textSizeYLabel">11sp</dimen>
+    <dimen name="sbg_default_strokeWidthAxis">0.25dp</dimen>
+    <dimen name="sbg_default_textSizeBarValue">12sp</dimen>
+    <dimen name="sbg_default_barSpacing">10dp</dimen>
+
+</resources>
