@@ -187,7 +187,7 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun calculateYLabelDistance() {
-        mYLabelStepHeight = mGraphRect.height().div(mYLabelCount+1)
+        mYLabelStepHeight = mGraphRect.height().div(mYLabelCount)
         mPixelPerValue = mYLabelStepHeight/mYLabelStepValue
     }
 
@@ -268,62 +268,6 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
             canvas.drawCircle(it.left + it.width()/2f,it.top.toFloat(),mBubbleRadius,mBubbleFillPaint)
             canvas.drawCircle(it.left + it.width()/2f,it.top.toFloat(),mBubbleRadius,mBubbleStrokePaint)
         }
-    }
-
-    /**
-     * Round up the passed value to a NICE value.
-     */
-
-    private fun RoundUp(value: Double): Double {
-        var retVal = value
-        val exponent: Int
-        var i: Int
-
-        //10 to the power of what = value
-        // e.g if value = 1000 exponent = 3
-        //10 to the power of 3 = 1000
-        exponent = Math.floor(Math.log10(value)).toInt()
-
-        //if exponent is <0 i.e value is smaller than 10
-        if (exponent < 0) {
-            i = exponent
-            while (i < 0) {
-                retVal *= 10.0 // make the value near to >= 10 by multiplying by 10 until exponent is >=0
-                i++
-            }
-        } else { // if value is greater than 10
-            i = 0
-            while (i < exponent) {
-                retVal /= 10.0 // make the value near to <= 10 by dividing by 10
-                i++
-            }
-        }
-
-        if (retVal > 5.0)
-            retVal = 10.0
-        else if (retVal > 2.0)
-            retVal = 5.0
-        else if (retVal > 1.0)
-            retVal = 2.0
-        else
-            retVal = 1.0
-
-        if (exponent < 0) {
-            i = exponent
-            while (i < 0) {
-                retVal /= 10.0
-                i++
-            }
-        } else {
-            i = 0
-            while (i < exponent) {
-                retVal *= 10.0
-                i++
-            }
-        }
-
-        return retVal
-
     }
 
 }

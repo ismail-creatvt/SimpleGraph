@@ -1,6 +1,23 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+
+    def groupProjectID = 'in.creatvt.ismail'
+    def artifactProjectID = 'SimpleGraph'
+    def publishVersionID = '1.0'
+
+    userOrg = 'ismail-shaikh'
+    repoName = 'SimpleGraph'
+    groupId = groupProjectID
+    artifactId = artifactProjectID
+    publishVersion = publishVersionID
+    desc = 'Lightweight android library to display simple graph'
+    website = 'https://github.com/ismail-creatvt/SimpleGraph'
+
+}
 
 android {
     compileSdkVersion 28
@@ -15,7 +32,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
-
+//    3264ab2353215daa34b035ecbe9629d5463de4b1
     buildTypes {
         release {
             minifyEnabled false
@@ -34,6 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation "androidx.core:core-ktx:1.0.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 repositories {
     mavenCentral()
