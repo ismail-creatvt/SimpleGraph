@@ -1,4 +1,4 @@
-<img src="simple_graph.png" title="SimpleGraph" alt="">
+<img src="simple_graph.png" width="100" title="SimpleGraph" alt="">
 
 # SimpleGraph
 Lightweight android library to display simple graph
