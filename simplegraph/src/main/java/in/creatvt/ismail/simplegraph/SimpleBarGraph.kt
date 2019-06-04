@@ -1,18 +1,27 @@
 package `in`.creatvt.ismail.simplegraph
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Point
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.res.ResourcesCompat
 
 
 class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: AttributeSet?=null, defStyle: Int=0)
     : View(context, attrs, defStyle) {
+
+    companion object{
+        private const val DEFAULT_Y_LABEL_COUNT = 8
+    }
+
+    private var currentFraction: Float = 0f
 
     private var hasBarWidth: Boolean = false
 
@@ -56,7 +65,7 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
     private val mYLabelPaint = Paint(ANTI_ALIAS_FLAG)
     private val mBarValuePaint = Paint(ANTI_ALIAS_FLAG)
 
-    private val mYLabelCount = 8
+    private var mYLabelCount = DEFAULT_Y_LABEL_COUNT
 
     private val mGraphRect = Rect()
 
@@ -121,6 +130,30 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
         a.recycle()
     }
 
+    override fun getGlobalVisibleRect(r: Rect?, globalOffset: Point?): Boolean {
+        val visible = super.getGlobalVisibleRect(r, globalOffset)
+        if(visible){
+            animateBars()
+        }
+        return visible
+    }
+
+    fun animateBars(){
+        ValueAnimator.ofFloat(0f,1f).apply {
+            addUpdateListener {
+                currentFraction= it.animatedValue as Float
+                invalidate()
+            }
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+    }
+
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        animateBars()
+    }
+
     private fun initializePaints() {
         mXLabelPaint.textSize = mTextSizeXLabel
         mXLabelPaint.color = mTextColorLabel
@@ -162,7 +195,7 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
         mData = barData
         repeat(mData.size) { mBarRects.add(Rect()) }
         calculateValues()
-        postInvalidate()
+        animateBars()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -175,10 +208,10 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
         mGraphRect.right = width
         mGraphRect.top = paddingTop
 
-        calculateValues()
         calculateBarWidth()
         calculateYLabelDistance()
         calculateBarRects()
+
         drawXAxis(canvas)
         drawYAxis(canvas)
         drawBars(canvas)
@@ -187,7 +220,7 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun calculateYLabelDistance() {
-        mYLabelStepHeight = mGraphRect.height().div(mYLabelCount)
+        mYLabelStepHeight = mGraphRect.height().minus(mTextSizeYLabel).div(mYLabelCount).toInt()
         mPixelPerValue = mYLabelStepHeight/mYLabelStepValue
     }
 
@@ -205,7 +238,18 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
     private fun calculateValues(){
         if(mData.isEmpty()) return
         val max = mData.maxBy { it.value }
-        mYLabelStepValue = Math.ceil(max!!.value.div(mYLabelCount).toDouble()).toFloat()
+        calculateStepAndMaxYLabel(max!!)
+        if(max.value < mMaxYLabel.div(2)){
+            mYLabelCount = mYLabelCount.div(2)
+            calculateStepAndMaxYLabel(max)
+        }else{
+            mYLabelCount = DEFAULT_Y_LABEL_COUNT
+            calculateStepAndMaxYLabel(max)
+        }
+    }
+
+    private fun calculateStepAndMaxYLabel(max:BarData){
+        mYLabelStepValue = Math.ceil(max.value.div(mYLabelCount).toDouble()).toFloat()
         mMaxYLabel =  mYLabelStepValue * mYLabelCount
     }
 
@@ -227,7 +271,7 @@ class SimpleBarGraph @JvmOverloads constructor(context: Context, attrs: Attribut
             mBarRects[i].left = (mGraphRect.left + (i * (mBarSpacing + mBarWidth)) + mBarSpacing).toInt()
             mBarRects[i].right = mBarRects[i].left + mBarWidth.toInt()
             mBarRects[i].bottom = mGraphRect.bottom
-            mBarRects[i].top = mGraphRect.bottom - Math.ceil(mPixelPerValue.times(barData.value).toDouble()).toInt()
+            mBarRects[i].top = mGraphRect.bottom - (Math.ceil(mPixelPerValue.times(barData.value).toDouble()).toInt() * currentFraction).toInt()
         }
     }
 
