@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BarGraph</string>
+    <string name="animate_bars">Animate Bars</string>
 </resources>
