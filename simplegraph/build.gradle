@@ -7,7 +7,7 @@ publish {
 
     def groupProjectID = 'in.creatvt.ismail'
     def artifactProjectID = 'SimpleGraph'
-    def publishVersionID = '1.0'
+    def publishVersionID = '1.0.1'
 
     userOrg = 'ismail-shaikh'
     repoName = 'SimpleGraph'
@@ -27,12 +27,12 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
-//    3264ab2353215daa34b035ecbe9629d5463de4b1
+
     buildTypes {
         release {
             minifyEnabled false
